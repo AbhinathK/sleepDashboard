@@ -1,5 +1,5 @@
 <?php
-	include("config.php");
+	require_once("config.php");
 	session_start();
 
 	if($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -8,8 +8,10 @@
 		$myusername = mysqli_real_escape_string($db, $_POST['username']);
 		$mypassword = mysqli_real_escape_string($db, $_POST['password']);
 
-		$sql = "SELECT id from admin WHERE username = '$myusername' and password = '$mypassword'";
-		$result = mysqli_query($db, $sql);
+		$stmt =$db->prepare("SELECT id from admin WHERE username = ? and password = ?");
+		$stmt->bind_param('ss', $myusername, $mypassword);
+		$stmt->execute();
+		$result = $stmt->get_result();
 		$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 		//$active = $row['active'];
 
