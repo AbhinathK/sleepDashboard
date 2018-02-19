@@ -1,3 +1,7 @@
+<?php
+	include('session.php');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,6 +40,9 @@
                   <div class = "patient icon">
 
                   </div>
+		  <div class = "sign out link">
+		  	<a href = "logout.php">Sign Out</a>
+		  </div>
                 </ul>
             </div>
         </div>
