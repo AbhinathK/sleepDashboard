@@ -26,7 +26,7 @@ require "config.php"
                   <div class = "patient icon">
                     <?php
                       $sql = "SELECT studyID, ecg, posture, heart_rate FROM studyID";
-                      $result = mysqli_query($db $sql);
+                      $result = mysqli_query($db,$sql);
                       if ($result->num_rows > 0) {
                       echo "<table><tr><th>studyID</th><th>ecg</th></tr>";
                       // output data of each row
