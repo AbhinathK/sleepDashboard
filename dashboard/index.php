@@ -1,7 +1,7 @@
 <?php
-require "config.php"
+require "config.php";
+include("session.php");
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,21 +24,11 @@ require "config.php"
                 </div>
                 <ul class="nav">
                   <div class = "patient icon">
-                    <?php
-                      $sql = "SELECT studyID, ecg, posture, heart_rate FROM studyID";
-                      $result = mysqli_query($db,$sql);
-                      if ($result->num_rows > 0) {
-                      echo "<table><tr><th>studyID</th><th>ecg</th></tr>";
-                      // output data of each row
-                      while($row = $result->fetch_assoc()) {
-                          echo "<tr><td>".$row["studyID"]."</td><td>".$row["ecg"]." ".$row["posture"]."</td></tr>";
-                      }
-                      echo "</table>";
-                  } else {
-                      echo "0 results";
-                  }
-                  $db->close();
-                    ?>
+                  </div>
+                  <div class = "sign out">
+                    <a href = "logout.php">Sign out</a>
+                  </div>
+
 
                 </ul>
             </div>
