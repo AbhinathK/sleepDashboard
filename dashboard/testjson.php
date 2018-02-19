@@ -65,7 +65,7 @@ $sql="INSERT INTO studyID (time, ecg) VALUES($time,$data)";
 if ($db->query($sql) === TRUE) {
     echo "New record created successfully";
 } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    echo "Error: " . $sql . "<br>" . $db->error;
 }
 
 $db->close();
