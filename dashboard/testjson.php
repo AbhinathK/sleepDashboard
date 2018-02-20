@@ -46,21 +46,39 @@ echo $json->name;
 
     fclose($f);
 */
+$get = json_decode(stripslashes($_POST['req']));
+$data = $get->data; // Get name you send
+
+$time = $get->time; // Get age of user
+$data_= date("m-d-Y H:i:s", $time/1000);
+$type = $get ->type;
+$content = stripslashes(file_get_contents("php://input"));
+$f = fopen('out.txt', 'w+');
+
+fwrite($f, $content);
+fwrite($f,"\n");
+fwrite($f, $time);
+fwrite($f,"\n");
+fwrite($f, $data);
+fwrite($f,"\n");
+fwrite($f, $type);
+fwrite($f,"\n");
+fwrite($f, $data_);
+fclose($f);
 
 require_once("config.php");
 
-$content = file_get_contents("php://input");
-$f = fopen('out.txt', 'w+');
+//if ($conn->connect_error) {
+  //  die("Connection failed: " . $conn->connect_error);
+//}
+//echo "DB Connected successfully";
 
+//mysqli_select_db($conn,"sleep_study");
 
-fclose($f);
+//echo "\n DB is seleted as Test  successfully";
 
-$get = json_decode(stripslashes($_POST['req']));
-
-$time = $get->time;
-$data = $get->data;
-
-$sql="INSERT INTO studyID (time, ecg) VALUES($time,$data)";
+$sql="INSERT INTO test (time, ecg) VALUES ($time,$data)";
+//$sql="INSERT INTO  (ftime) VALUES ($time)";
 
 if ($db->query($sql) === TRUE) {
     echo "New record created successfully";
@@ -68,4 +86,9 @@ if ($db->query($sql) === TRUE) {
     echo "Error: " . $sql . "<br>" . $db->error;
 }
 
-$db->close();
+
+//mysqli_close($conn);
+
+
+
+
