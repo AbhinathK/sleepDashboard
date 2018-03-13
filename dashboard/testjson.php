@@ -48,7 +48,12 @@ echo $json->name;
 */
 $get = json_decode(stripslashes($_POST['req']));
 $data = $get->data; // Get name you send
-
+$hr_=$get->hr;
+list($part1,$part2)=explode(',', $hr_);
+$hr = $part2;
+$pos_ = $get->pos;
+list($part1_, $part2_)=explode(',',$pos_);
+$pos = $part2_;
 $time = $get->time; // Get age of user
 $data_= date("m-d-Y H:i:s", $time/1000);
 $type = $get ->type;
@@ -64,30 +69,92 @@ fwrite($f,"\n");
 fwrite($f, $type);
 fwrite($f,"\n");
 fwrite($f, $data_);
-fclose($f);
 
-require_once("config.php");
 
-//if ($conn->connect_error) {
-  //  die("Connection failed: " . $conn->connect_error);
-//}
-//echo "DB Connected successfully";
+$conn = new mysqli('localhost:3306','root','team29UCL', 'sleep_studies');
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+echo "DB Connected successfully";
 
 //mysqli_select_db($conn,"sleep_study");
 
-//echo "\n DB is seleted as Test  successfully";
+echo "\n DB is seleted as Test  successfully";
 
-$sql="INSERT INTO test (time, ecg) VALUES ($time,$data)";
-//$sql="INSERT INTO  (ftime) VALUES ($time)";
+setcookie(heart_rate, 0, time() + 60, "/");
+setcookie(posture, "facing up", time() + 60, "/");
 
-if ($db->query($sql) === TRUE) {
-    echo "New record created successfully";
-} else {
-    echo "Error: " . $sql . "<br>" . $db->error;
+//$temp_hr = 0;
+//$temp_posture = "facing up";
+
+
+if($type=='hr'){
+    fwrite($f,"worked");
+    list($part1, $part2) = explode(',', $data);
+    setcookie("heart_rate", $part2, time() + 60, "/");
+    fwrite($f, $_COOKIE['heart_rate']);
+    //$sql="INSERT INTO hr (fValue, ftime) VALUES ('$part2', $part1)";
+    fwrite($f,"\n");
+    fwrite($f, $part1);
+    fwrite($f,"\n");
+    fwrite($f, $part2);
+    if ($conn->query($sql) === TRUE) {
+        echo "New record created successfully";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+    fclose($f);
+    mysqli_close($conn);
+
+}
+if($type=='pos'){
+        fwrite($f,"worked");
+        list($part1, $part2) = explode(',', $data);
+        setcookie("posture", $part2, time() + 60, "/");
+	fwrite($f, $_COOKIE['posture']);
+        //$sql="INSERT INTO pos (fValue, ftime) VALUES ('$part2', $part1)";
+        fwrite($f,"\n");
+        fwrite($f, $part1);
+        fwrite($f,"\n");
+        fwrite($f, $part2);
+    if ($conn->query($sql) === TRUE) {
+        fwrite($f,"\n");
+        fwrite($f,"worked");
+        echo "New record created successfully";
+    } else {
+        fwrite($f,"\n");
+        fwrite($f,"notworked");
+        fwrite($f,"\n");
+        fwrite($f,$conn->error);
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+    fclose($f);
+    mysqli_close($conn);
+
+}
+
+if($type=='ecg'){
+        fwrite($f,"noworked");
+	//fwrite($f, $_COOKIE['heart_rate']);
+	//fwrite($f, $_COOKIE['posture']);
+        $sql="INSERT INTO test (time, ecg, heart_rate, posture) VALUES ($time, $data, '$hr', '$pos')";
+    if ($conn->query($sql) === TRUE) {
+        echo "New record created successfully";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+	fwrite($f, $conn->error);
+    }
+    fclose($f);
+    mysqli_close($conn);
+
 }
 
 
-//mysqli_close($conn);
+
+
+
+
 
 
 

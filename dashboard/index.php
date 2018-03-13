@@ -76,6 +76,9 @@
 </head>
 
 <body>
+<?php
+ include("session.php");
+?>
 
   <!-- Sidebar-->
 <div class="sideMenu" style="width:25%">
@@ -112,20 +115,20 @@
   class SampleDashboard extends StandaloneDashboard {
     protected $pdo;
     public function initialize(){
-        $this->pdo = new PDO("mysql:host=localhost:3306;dbname=sleep_studies", "root", "abhikumar1971");
+        $this->pdo = new PDO("mysql:host=localhost:3306;dbname=sleep_studies", "root", "team29UCL");
     }
     private function ecgChartDraw() {
-        $query = $this->pdo->query("SELECT time, ecg FROM( SELECT time, ecg FROM study ORDER BY time DESC LIMIT 50 )sub ORDER BY time ASC");
+        $query = $this->pdo->query("SELECT time, ecg FROM( SELECT time, ecg FROM test ORDER BY time DESC LIMIT 50 )sub ORDER BY time ASC");
         return  $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
     private function heartRateChartDraw() {
-        $query = $this->pdo->query("SELECT heart_rate FROM study ORDER BY time DESC LIMIT 1");
+        $query = $this->pdo->query("SELECT heart_rate FROM test ORDER BY time DESC LIMIT 1");
         return  $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
     private function postureChartDraw() {
-        $query = $this->pdo->query("SELECT posture FROM study ORDER BY time DESC LIMIT 1");
+        $query = $this->pdo->query("SELECT posture FROM test ORDER BY time DESC LIMIT 1");
         return  $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
